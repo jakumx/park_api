@@ -20,7 +20,10 @@ defmodule ParkApi.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ParkApi do
-  #   pipe_through :api
-  # end
+  scope "/api", ParkApi do
+    pipe_through :api
+
+    resources "/games", GameController, except: [:new, :edit]
+    resources "/parks", ParkController, except: [:new, :edit]
+  end
 end
