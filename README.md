@@ -3,7 +3,7 @@
 se actualizaron los componentes elixir y phoenix
 
 
-    bower update
+    brew update
 
 se instalo el postgres por medio de su  [pagina](https://www.postgresql.org/download/macosx/)
 
