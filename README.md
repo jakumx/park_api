@@ -1,20 +1,55 @@
-# ParkApi
+#Creación de proyecto park_api
 
-To start your Phoenix app:
+se actualizaron los componentes elixir y phoenix
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+    bower update
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+se instalo el postgres por medio de su  [pagina](https://www.postgresql.org/download/macosx/)
 
-## Learn more
+se creo el proyecto por medio de
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+    mix phoenix.new park_api
+
+se crearon los modelos json Game y Park ejem:
+
+    mix phoenix.genmix phoenix.gen.json Game games name:string description:string active:boolean images:array:string  
+
+en web/router.ex, se agregan dependiendo de los modelos
+
+    resources "/games", GameController, except: [:new, :edit]
+
+quedando:
+
+    scope "/api", ParkApi do
+      pipe_through :api
+
+      resources "/games", GameController, except: [:new, :edit]
+      resources "/parks", ParkController, except: [:new, :edit]
+    end
+
+para el deploy en heroic, el mismo heroku tiene sus [pasos](http://www.phoenixframework.org/docs/heroku) para hacerlo, desde como empezar el proyecto y agregar ala base de datos igual de heroku, sus buildpacks y hacer el ecto.migrate
+
+
+sus rutas:
+
+    page_path  GET     /               ParkApi.PageController :index
+    game_path  GET     /api/games      ParkApi.GameController :index
+    game_path  GET     /api/games/:id  ParkApi.GameController :show
+    game_path  POST    /api/games      ParkApi.GameController :create
+    game_path  PATCH   /api/games/:id  ParkApi.GameController :update
+               PUT     /api/games/:id  ParkApi.GameController :update
+    game_path  DELETE  /api/games/:id  ParkApi.GameController :delete
+    park_path  GET     /api/parks      ParkApi.ParkController :index
+    park_path  GET     /api/parks/:id  ParkApi.ParkController :show
+    park_path  POST    /api/parks      ParkApi.ParkController :create
+    park_path  PATCH   /api/parks/:id  ParkApi.ParkController :update
+               PUT     /api/parks/:id  ParkApi.ParkController :update
+    park_path  DELETE  /api/parks/:id  ParkApi.ParkController :delete
+
+##Notas
+Cabe aclarar que estos pasos sencillos tomaron su tiempo aprenderlos pues empece creando el proyecto con --no-html, --no-bulch y con jaserializer. El cual cuando se hacia el deploy no funcionaba y con el jaserializer no me devolvía las images.
+
+##Heroku
+
+[https://desolate-ravine-88557.herokuapp.com](https://desolate-ravine-88557.herokuapp.com)
